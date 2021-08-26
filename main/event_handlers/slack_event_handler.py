@@ -28,3 +28,6 @@ class SlackEventHandler():
 
     def schedule(self, **kwargs):
         return AppMentionService.schedule(**kwargs)
+
+    def schedule_remove(self, **kwargs):
+        return AppMentionService.schedule_remove(**kwargs)
