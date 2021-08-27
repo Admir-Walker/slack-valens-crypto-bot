@@ -24,8 +24,8 @@ class SlackEventHandler():
     # @bot_name help
     def help(self, **kwargs):
         return AppMentionService.help(**kwargs)
-    # @bot_name schedule hh:mm space-separated-crypto-symbols
 
+    # @bot_name schedule hh:mm space-separated-crypto-symbols
     def schedule(self, **kwargs):
         return AppMentionService.schedule(**kwargs)
 

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from main import client, scheduler
 from main.api.cryptocurrency import CryptoCurrency
 
@@ -17,8 +18,8 @@ class AppMentionService():
                     coin = response['data'][symbol.upper()]
                     coin_name = coin['name']
                     usd_quote = coin['quote']['USD']
-                    price = usd_quote['price']
-                    percent_change_24h = usd_quote['percent_change_24h']
+                    price = AppMentionService.round_price(usd_quote['price'])
+                    percent_change_24h = round(usd_quote['percent_change_24h'],2)
 
                     messages.append(
                         f'{coin_name} - Price: {price}$, Price change in 24h: {percent_change_24h}%.')
@@ -83,6 +84,18 @@ class AppMentionService():
         except:
             client.chat_postMessage(
                 channel=AppMentionService.get_channel(**kwargs), text="Something went wrong, please try again.")
+    @staticmethod
+    def round_price(price):
+        price = Decimal(price)
+        min_num_of_decimals = 4
+        max_num_of_decimals = 10
+        starting_value = pow(10, -min_num_of_decimals)
+        for i in range(min_num_of_decimals, max_num_of_decimals):
+            if price >= starting_value:
+                return round(price, i)
+            starting_value /= 10
+        
+        return float(price)
 
     @staticmethod
     def get_job_id(**kwargs):
